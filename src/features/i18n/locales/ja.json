@@ -1,0 +1,10 @@
+{
+  "nav": {
+    "home": "ホーム",
+    "articles": "記事",
+    "about": "について"
+  },
+  "site": {
+    "description": "記事と写真のブログ。"
+  }
+}

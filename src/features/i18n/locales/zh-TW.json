@@ -1,0 +1,10 @@
+{
+  "nav": {
+    "home": "首頁",
+    "articles": "文章",
+    "about": "關於"
+  },
+  "site": {
+    "description": "文章與攝影的個人空間。"
+  }
+}

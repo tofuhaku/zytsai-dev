@@ -46,7 +46,10 @@ src/
 │       ├── hello-world.md       # lang: en
 │       ├── hello-world-zh.md   # lang: zh-TW
 │       └── hello-world-ja.md   # lang: ja
-├── features/               # 功能模組（i18n、theme、search）
+├── features/
+│   └── i18n/               # useTranslation(lang) → { t }
+│       ├── index.ts         # 對外唯一入口
+│       └── locales/         # en.json / ja.json / zh-TW.json
 └── styles/                 # global.css、tokens.css
 
 ## 新增功能步驟

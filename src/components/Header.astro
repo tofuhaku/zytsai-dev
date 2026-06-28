@@ -1,8 +1,18 @@
 ---
+import { useTranslation } from '../features/i18n';
+import type { Lang } from '../features/i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+const { t } = useTranslation(lang);
+
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/articles", label: "Articles" },
-  { href: "/about", label: "About" },
+  { href: '/', label: t('nav.home') },
+  { href: '/articles', label: t('nav.articles') },
+  { href: '/about', label: t('nav.about') },
 ];
 
 const currentPath = Astro.url.pathname;

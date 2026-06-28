@@ -1,0 +1,10 @@
+{
+  "nav": {
+    "home": "Home",
+    "articles": "Articles",
+    "about": "About"
+  },
+  "site": {
+    "description": "A place for articles and photography."
+  }
+}
