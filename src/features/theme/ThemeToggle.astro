@@ -1,0 +1,46 @@
+---
+---
+
+<button
+  id="theme-toggle"
+  aria-label="Toggle theme"
+  style="
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    padding: var(--space-xs);
+    line-height: 1;
+    display: flex;
+    align-items: center;
+  "
+>●</button>
+
+<script>
+  import { setTheme } from './index';
+  import type { Theme } from './index';
+
+  const button = document.getElementById('theme-toggle');
+
+  function updateButton(theme: Theme) {
+    if (!button) return;
+    // ● = dark mode active (click to go light)
+    // ○ = light mode active (click to go dark)
+    button.textContent = theme === 'dark' ? '○' : '●';
+    button.setAttribute(
+      'aria-label',
+      theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
+    );
+  }
+
+  const current = (document.documentElement.getAttribute('data-theme') ?? 'light') as Theme;
+  updateButton(current);
+
+  button?.addEventListener('click', () => {
+    const next: Theme =
+      document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    updateButton(next);
+  });
+</script>
