@@ -28,12 +28,26 @@
 
 ## 專案結構
 src/
-├── components/       # UI 元件，純展示
-├── features/         # 功能模組（i18n、theme、search）
-├── layouts/          # 版型（BaseLayout、ArticleLayout）
-├── pages/            # 路由，越薄越好
-├── content/          # 純內容（.md / .mdx / .svelte）
-└── styles/           # global.css、tokens.css
+├── content.config.ts   # Content Layer schema（Astro 7+，不在 content/ 內）
+├── components/
+│   ├── Header.astro
+│   ├── Footer.astro
+│   └── PostCard.astro  # 文章列表卡片
+├── layouts/
+│   ├── BaseLayout.astro
+│   └── ArticleLayout.astro
+├── pages/
+│   ├── index.astro
+│   └── articles/
+│       ├── index.astro      # 文章列表
+│       └── [slug].astro     # 文章內頁
+├── content/
+│   └── articles/
+│       ├── hello-world.md       # lang: en
+│       ├── hello-world-zh.md   # lang: zh-TW
+│       └── hello-world-ja.md   # lang: ja
+├── features/               # 功能模組（i18n、theme、search）
+└── styles/                 # global.css、tokens.css
 
 ## 新增功能步驟
 1. 在 src/features/ 新增資料夾
@@ -42,7 +56,7 @@ src/
 
 ## 新增內容類型步驟
 1. 在 src/content/ 新增資料夾
-2. 在 src/content/config.ts 新增 schema
+2. 在 src/content.config.ts 新增 schema（含 glob loader）
 3. 在 src/layouts/ 新增對應版型
 4. 在 src/pages/ 新增路由
 

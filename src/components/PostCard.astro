@@ -1,0 +1,51 @@
+---
+interface Props {
+  title: string;
+  date: Date;
+  description: string;
+  href: string;
+  tags?: string[];
+}
+
+const { title, date, description, href, tags } = Astro.props;
+
+const formattedDate = date.toLocaleDateString('en-CA');
+---
+
+<a href={href} style="
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-lg) 0;
+">
+  <time
+    datetime={date.toISOString()}
+    style="color: var(--color-text-muted); font-size: 0.85rem;"
+  >{formattedDate}</time>
+  <h2 style="
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: var(--space-xs) 0 var(--space-sm);
+    color: var(--color-text);
+  ">{title}</h2>
+  <p style="
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    margin: 0;
+    line-height: 1.5;
+  ">{description}</p>
+  {tags && tags.length > 0 && (
+    <div style="display: flex; gap: var(--space-sm); margin-top: var(--space-sm); flex-wrap: wrap;">
+      {tags.map(tag => (
+        <span style="
+          font-size: 0.75rem;
+          color: var(--color-text-muted);
+          border: 1px solid var(--color-border);
+          padding: 0 var(--space-sm);
+          border-radius: 999px;
+        ">{tag}</span>
+      ))}
+    </div>
+  )}
+</a>
