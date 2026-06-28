@@ -7,7 +7,7 @@
 - Framework: Astro 5.x + Svelte
 - Styling: Tailwind CSS v4 + CSS tokens（src/styles/tokens.css）
 - 搜尋: Pagefind（Phase 3，之後可換 Meilisearch）
-- 多語言: 自製 i18n（src/features/i18n/）
+- 多語言: 自製 i18n（src/features/i18n/），支援 en / ja / zh-TW
 - Deploy: Cloudflare Pages（git push 自動部署）
 
 ## 開發伺服器
@@ -48,4 +48,4 @@ src/
 
 ## 文章 Frontmatter 規範
 必填：title、date、description
-選填：tags、lang（zh-TW / en）、type（article / photo）
+選填：tags、lang（en / ja / zh-TW）、type（article / photo）
