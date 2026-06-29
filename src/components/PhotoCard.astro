@@ -1,0 +1,54 @@
+---
+interface Props {
+  title: string;
+  date: Date;
+  location?: string;
+  href: string;
+}
+
+const { title, date, location, href } = Astro.props;
+
+const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+---
+
+<a href={href} class="photo-card">
+  <h2 class="photo-title">{title}</h2>
+  <div class="photo-meta">
+    <time datetime={date.toISOString()}>{formattedDate}</time>
+    {location && <span class="photo-location">{location}</span>}
+  </div>
+</a>
+
+<style>
+  .photo-card {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    padding: var(--space-md) 0;
+  }
+
+  .photo-title {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-medium);
+    margin: 0 0 var(--space-xs);
+    transition: color 150ms;
+  }
+
+  .photo-card:hover .photo-title {
+    color: var(--color-accent);
+  }
+
+  .photo-meta {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: center;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    font-family: var(--font-sans);
+  }
+
+  .photo-location::before {
+    content: "·";
+    margin-right: var(--space-xs);
+  }
+</style>

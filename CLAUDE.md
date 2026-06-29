@@ -32,20 +32,28 @@ src/
 ├── components/
 │   ├── Header.astro
 │   ├── Footer.astro
-│   └── PostCard.astro  # Article list card
+│   ├── PostCard.astro   # Article list card (timeline layout)
+│   └── PhotoCard.astro  # Photo list card (grid layout)
 ├── layouts/
 │   ├── BaseLayout.astro
-│   └── ArticleLayout.astro
+│   ├── ArticleLayout.astro
+│   └── PhotoLayout.astro
 ├── pages/
 │   ├── index.astro
-│   └── articles/
-│       ├── index.astro      # Article list
-│       └── [slug].astro     # Article detail
+│   ├── articles/
+│   │   ├── index.astro      # Article list
+│   │   └── [slug].astro     # Article detail
+│   └── photos/
+│       ├── index.astro      # Photo grid
+│       └── [slug].astro     # Photo detail
 ├── content/
-│   └── articles/
-│       ├── hello-world.md       # lang: en
-│       ├── hello-world-zh.md    # lang: zh-TW
-│       └── hello-world-ja.md    # lang: ja
+│   ├── articles/
+│   │   ├── hello-world.md       # lang: en
+│   │   ├── hello-world-zh.md    # lang: zh-TW
+│   │   └── hello-world-ja.md    # lang: ja
+│   └── photos/
+│       ├── tokyo-2026.md        # location: Tokyo
+│       └── taipei-streets.md    # location: Taipei
 ├── features/
 │   ├── i18n/               # useTranslation(lang) → { t }
 │   │   ├── index.ts         # Public entry point

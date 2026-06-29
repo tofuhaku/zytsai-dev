@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import PhotoCard from '../../components/PhotoCard.astro';
+
+const photos = await getCollection('photos');
+const sorted = photos.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout title="Photos">
+  <Header slot="header" />
+
+  <div class="page">
+    <h1 class="page-title">Photos</h1>
+    <div class="photo-grid">
+      {sorted.map(photo => (
+        <PhotoCard
+          title={photo.data.title}
+          date={photo.data.date}
+          location={photo.data.location}
+          href={`/photos/${photo.id}`}
+        />
+      ))}
+    </div>
+  </div>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  .page {
+    max-width: var(--width-content);
+    margin: 0 auto;
+    padding: var(--space-xl) var(--space-lg);
+  }
+
+  .page-title {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-medium);
+    margin: 0 0 var(--space-lg);
+  }
+
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--space-lg);
+  }
+</style>

@@ -1,0 +1,102 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  date: Date;
+  description: string;
+  location?: string;
+  tags?: string[];
+}
+
+const { title, date, description, location, tags } = Astro.props;
+
+const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout title={title} description={description}>
+  <Header slot="header" />
+
+  <article class="photo-article">
+    <header class="photo-header">
+      <h1 class="photo-title">{title}</h1>
+      <div class="photo-meta">
+        <time datetime={date.toISOString()}>{formattedDate}</time>
+        {location && <span class="photo-location">{location}</span>}
+        {tags && tags.length > 0 && (
+          <span class="photo-tags">
+            {tags.map(tag => <span class="tag">#{tag}</span>)}
+          </span>
+        )}
+      </div>
+      <p class="photo-description">{description}</p>
+    </header>
+
+    <div class="photo-content">
+      <slot />
+    </div>
+  </article>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  .photo-article {
+    max-width: var(--width-content);
+    margin: 0 auto;
+    padding: var(--space-xl) var(--space-lg);
+  }
+
+  .photo-header {
+    margin-bottom: var(--space-lg);
+  }
+
+  .photo-title {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--leading-tight);
+    margin: 0 0 var(--space-sm);
+  }
+
+  .photo-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    font-family: var(--font-sans);
+    margin-bottom: var(--space-md);
+  }
+
+  .photo-location {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .photo-location::before {
+    content: "·";
+  }
+
+  .photo-tags {
+    display: flex;
+    gap: var(--space-sm);
+  }
+
+  .tag {
+    font-size: var(--text-xs);
+  }
+
+  .photo-description {
+    color: var(--color-text-muted);
+    font-size: var(--text-base);
+    margin: 0;
+  }
+
+  .photo-content {
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-lg);
+  }
+</style>
