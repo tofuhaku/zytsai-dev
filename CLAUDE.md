@@ -27,6 +27,7 @@ Personal blog supporting articles and photography, minimalist design, multilingu
 4. Each feature in features/ exposes only index.ts; everything else is internal
 
 ## Project Structure
+```
 src/
 ├── content.config.ts   # Content Layer schema (Astro 7+, lives outside content/)
 ├── components/
@@ -65,6 +66,7 @@ src/
 │       ├── index.ts         # openSearch() / closeSearch()
 │       └── SearchModal.astro
 └── styles/                 # global.css, tokens.css
+```
 
 ## Adding a New Feature
 1. Create a folder under src/features/
