@@ -1,0 +1,151 @@
+---
+---
+
+<div id="search-backdrop" role="dialog" aria-modal="true" aria-label="Search">
+  <div id="search-box">
+    <input
+      id="search-input"
+      type="text"
+      placeholder="Search…"
+      autocomplete="off"
+      spellcheck="false"
+    />
+    <ul id="search-results"></ul>
+  </div>
+</div>
+
+<style>
+  #search-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: var(--color-overlay);
+    z-index: 100;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 20vh;
+  }
+
+  #search-backdrop.is-open {
+    display: flex;
+  }
+
+  #search-box {
+    width: 100%;
+    max-width: var(--width-content);
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    margin: 0 var(--space-lg);
+    padding: var(--space-md);
+  }
+
+  #search-input {
+    width: 100%;
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    color: var(--color-text);
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--space-sm);
+    margin-bottom: var(--space-sm);
+    outline: none;
+  }
+
+  #search-input::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  #search-results {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+
+  #search-results:empty {
+    display: none;
+  }
+</style>
+
+<script>
+  import { closeSearch } from './index';
+
+  const backdrop = document.getElementById('search-backdrop')!;
+  const input = document.getElementById('search-input') as HTMLInputElement;
+  const results = document.getElementById('search-results')!;
+
+  let pagefind: any;
+
+  async function initPagefind() {
+    if (pagefind) return;
+    try {
+      pagefind = await import(/* @vite-ignore */ '/pagefind/pagefind.js');
+      await pagefind.init();
+    } catch {
+      // Not available in dev mode — expected
+    }
+  }
+
+  // Init eagerly so it's ready regardless of how the modal is opened
+  initPagefind();
+
+  // Close on Esc or backdrop click
+  document.addEventListener('keydown', async (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      if (backdrop.classList.contains('is-open')) {
+        closeSearch();
+      } else {
+        const { openSearch } = await import('./index');
+        openSearch();
+      }
+    }
+    if (e.key === 'Escape') closeSearch();
+  });
+
+  backdrop.addEventListener('click', (e) => {
+    if (e.target === backdrop) closeSearch();
+  });
+
+  // Enter → navigate to first result
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const firstLink = results.querySelector<HTMLAnchorElement>('a');
+      if (firstLink) firstLink.click();
+    }
+  });
+
+  // Search
+  let debounce: ReturnType<typeof setTimeout>;
+  input.addEventListener('input', () => {
+    clearTimeout(debounce);
+    debounce = setTimeout(async () => {
+      const query = input.value.trim();
+      if (!query || !pagefind) {
+        results.innerHTML = '';
+        return;
+      }
+      const search = await pagefind.search(query);
+      const items: any[] = await Promise.all(
+        search.results.slice(0, 8).map((r: any) => r.data())
+      );
+      results.innerHTML = items
+        .map(
+          (item) => `
+          <li style="border-bottom:1px solid var(--color-border);">
+            <a href="${item.url}" style="display:block;padding:var(--space-sm) 0;text-decoration:none;color:inherit;">
+              <div style="font-family:var(--font-sans);font-size:var(--text-sm);font-weight:var(--font-weight-medium);color:var(--color-text);margin-bottom:var(--space-xs);">
+                ${item.meta?.title ?? 'Untitled'}
+              </div>
+              <div style="font-family:var(--font-sans);font-size:var(--text-xs);color:var(--color-text-muted);line-height:var(--leading-normal);">
+                ${item.excerpt}
+              </div>
+            </a>
+          </li>`
+        )
+        .join('');
+    }, 200);
+  });
+</script>

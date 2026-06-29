@@ -5,6 +5,7 @@
   --color-text-muted: #6b7280;
   --color-border: #e5e7eb;
   --color-accent: #2563eb;
+  --color-overlay: rgb(0 0 0 / 0.5);
 
   /* Typography */
   --font-sans: ui-sans-serif, system-ui, sans-serif;
@@ -47,4 +48,5 @@
   --color-text-muted: #9ca3af;
   --color-border: #27272a;
   --color-accent: #60a5fa;
+  --color-overlay: rgb(0 0 0 / 0.7);
 }

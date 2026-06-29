@@ -2,6 +2,7 @@
 import { useTranslation } from '../features/i18n';
 import type { Lang } from '../features/i18n';
 import ThemeToggle from '../features/theme/ThemeToggle.astro';
+import SearchModal from '../features/search/SearchModal.astro';
 
 interface Props {
   lang?: Lang;
@@ -37,10 +38,15 @@ const currentPath = Astro.url.pathname;
           </li>
         ))}
       </ul>
+      <button id="search-trigger" class="search-trigger" aria-label="Search">
+        ⌘K
+      </button>
       <ThemeToggle />
     </div>
   </nav>
 </header>
+
+<SearchModal />
 
 <style>
   .site-header {
@@ -93,4 +99,27 @@ const currentPath = Astro.url.pathname;
   .nav-link:hover:not(.nav-link--active) {
     color: var(--color-text);
   }
+
+  .search-trigger {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    background: none;
+    border: 1px solid var(--color-border);
+    padding: 2px var(--space-sm);
+    cursor: pointer;
+    border-radius: 4px;
+    transition: color 150ms, border-color 150ms;
+  }
+
+  .search-trigger:hover {
+    color: var(--color-text);
+    border-color: var(--color-text-muted);
+  }
 </style>
+
+<script>
+  import { openSearch } from '../features/search';
+
+  document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+</script>
