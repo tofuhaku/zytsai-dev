@@ -58,9 +58,12 @@ src/
 │   ├── i18n/               # useTranslation(lang) → { t }
 │   │   ├── index.ts         # Public entry point
 │   │   └── locales/         # en.json / ja.json / zh-TW.json
-│   └── theme/              # getTheme() / setTheme()
-│       ├── index.ts         # Public entry point
-│       └── ThemeToggle.astro
+│   ├── theme/              # getTheme() / setTheme()
+│   │   ├── index.ts         # Public entry point
+│   │   └── ThemeToggle.astro
+│   └── search/             # Pagefind integration
+│       ├── index.ts         # openSearch() / closeSearch()
+│       └── SearchModal.astro
 └── styles/                 # global.css, tokens.css
 
 ## Adding a New Feature
