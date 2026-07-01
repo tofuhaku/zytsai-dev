@@ -1,2 +1,2 @@
-/pagefind/*.wasm
+/pagefind/*.pagefind
   Content-Type: application/wasm
