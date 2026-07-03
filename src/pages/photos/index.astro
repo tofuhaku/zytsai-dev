@@ -19,6 +19,7 @@ const sorted = photos.sort((a, b) => b.data.date.getTime() - a.data.date.getTime
         <PhotoCard
           title={photo.data.title}
           date={photo.data.date}
+          image={photo.data.image}
           location={photo.data.location}
           href={`/photos/${photo.id}`}
         />

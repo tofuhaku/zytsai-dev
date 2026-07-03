@@ -27,5 +27,9 @@ export default defineConfig({
     plugins: [tailwindcss(), pagefindDevStub()],
   },
 
-  adapter: cloudflare()
+  adapter: cloudflare({
+    // The site is fully static (no Cloudflare Images binding), so optimize
+    // images at build time instead of routing them through a runtime endpoint.
+    imageService: 'compile',
+  })
 });
