@@ -20,7 +20,7 @@ const photos = defineCollection({
     description: z.string().optional(),
     tags: z.array(z.string()).optional(),
     location: z.string().optional(),
-    image: image(),
+    images: z.array(image()),
   }),
 });
 

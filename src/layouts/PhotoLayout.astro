@@ -9,35 +9,43 @@ interface Props {
   title: string;
   date: Date;
   description?: string;
-  image: ImageMetadata;
+  images: ImageMetadata[];
   location?: string;
   tags?: string[];
 }
 
-const { title, date, description, image, location, tags } = Astro.props;
-
+const { title, date, description, images, location, tags } = Astro.props;
 const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const count = images.length;
+const isOddMulti = count > 2 && count % 2 !== 0;
 ---
 
 <BaseLayout title={title} description={description}>
   <Header slot="header" />
 
   <article class="photo-article">
-    <Image class="photo-image" src={image} alt={title} width={1600} />
+    <div class:list={['photo-grid', { single: count === 1 }]}>
+      {images.map((img, i) => (
+        <div class:list={['photo-item', { 'span-full': isOddMulti && i === count - 1 }]}>
+          <Image src={img} alt={`${title} ${i + 1}`} width={1600} />
+        </div>
+      ))}
+    </div>
 
-    <header class="photo-header">
+    <div class="photo-caption">
       <h1 class="photo-title">{title}</h1>
       <div class="photo-meta">
         <time datetime={date.toISOString()}>{formattedDate}</time>
-        {location && <span class="photo-location">{location}</span>}
+        {location && <><span class="sep">·</span><span>{location}</span></>}
         {tags && tags.length > 0 && (
+          <><span class="sep">·</span>
           <span class="photo-tags">
             {tags.map(tag => <span class="tag">#{tag}</span>)}
-          </span>
+          </span></>
         )}
       </div>
       {description && <p class="photo-description">{description}</p>}
-    </header>
+    </div>
 
     <div class="photo-content">
       <slot />
@@ -49,25 +57,46 @@ const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month:
 
 <style>
   .photo-article {
-    max-width: var(--width-content);
-    margin: 0 auto;
-    padding: var(--space-xl) var(--space-lg);
+    padding: var(--space-xl) 0;
   }
 
-  .photo-image {
+  .photo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+    max-width: var(--width-wide);
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+  }
+
+  .photo-grid.single {
+    grid-template-columns: 1fr;
+    max-width: var(--width-content);
+  }
+
+  .photo-item {
+    overflow: hidden;
+    line-height: 0;
+  }
+
+  .photo-item.span-full {
+    grid-column: 1 / -1;
+  }
+
+  .photo-item img {
     display: block;
     width: 100%;
     height: auto;
-    border-radius: 4px;
-    margin-bottom: var(--space-lg);
   }
 
-  .photo-header {
-    margin-bottom: var(--space-lg);
+  .photo-caption {
+    max-width: var(--width-content);
+    margin: var(--space-lg) auto 0;
+    padding: 0 var(--space-lg);
   }
 
   .photo-title {
-    font-size: var(--text-3xl);
+    font-size: var(--text-2xl);
     font-weight: var(--font-weight-medium);
     line-height: var(--leading-tight);
     margin: 0 0 var(--space-sm);
@@ -76,21 +105,16 @@ const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month:
   .photo-meta {
     display: flex;
     align-items: center;
-    gap: var(--space-md);
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    font-family: var(--font-sans);
     font-size: var(--text-sm);
     color: var(--color-text-muted);
-    font-family: var(--font-sans);
     margin-bottom: var(--space-md);
   }
 
-  .photo-location {
-    display: flex;
-    align-items: center;
-    gap: var(--space-xs);
-  }
-
-  .photo-location::before {
-    content: "·";
+  .sep {
+    opacity: 0.4;
   }
 
   .photo-tags {
@@ -106,10 +130,32 @@ const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month:
     color: var(--color-text-muted);
     font-size: var(--text-base);
     margin: 0;
+    line-height: var(--leading-loose);
   }
 
   .photo-content {
+    max-width: var(--width-content);
+    margin: var(--space-md) auto 0;
+    padding: var(--space-md) var(--space-lg) 0;
     border-top: 1px solid var(--color-border);
-    padding-top: var(--space-lg);
+    color: var(--color-text-muted);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+  }
+
+  .photo-content:empty {
+    display: none;
+  }
+
+  @media (max-width: 600px) {
+    .photo-grid {
+      grid-template-columns: 1fr;
+      padding: 0;
+      gap: 2px;
+    }
+
+    .photo-item.span-full {
+      grid-column: auto;
+    }
   }
 </style>
