@@ -14,12 +14,13 @@ const articles = defineCollection({
 
 const photos = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/photos' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     date: z.date(),
     description: z.string(),
     tags: z.array(z.string()).optional(),
     location: z.string().optional(),
+    image: image(),
   }),
 });
 

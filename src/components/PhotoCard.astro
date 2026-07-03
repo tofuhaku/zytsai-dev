@@ -1,17 +1,22 @@
 ---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
 interface Props {
   title: string;
   date: Date;
+  image: ImageMetadata;
   location?: string;
   href: string;
 }
 
-const { title, date, location, href } = Astro.props;
+const { title, date, image, location, href } = Astro.props;
 
 const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
 ---
 
 <a href={href} class="photo-card">
+  <Image class="photo-thumb" src={image} alt={title} width={400} height={400} />
   <h2 class="photo-title">{title}</h2>
   <div class="photo-meta">
     <time datetime={date.toISOString()}>{formattedDate}</time>
@@ -25,6 +30,15 @@ const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month:
     color: inherit;
     text-decoration: none;
     padding: var(--space-md) 0;
+  }
+
+  .photo-thumb {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: var(--space-sm);
   }
 
   .photo-title {
