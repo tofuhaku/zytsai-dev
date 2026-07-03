@@ -8,7 +8,7 @@ import Footer from '../components/Footer.astro';
 interface Props {
   title: string;
   date: Date;
-  description: string;
+  description?: string;
   image: ImageMetadata;
   location?: string;
   tags?: string[];
@@ -36,7 +36,7 @@ const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month:
           </span>
         )}
       </div>
-      <p class="photo-description">{description}</p>
+      {description && <p class="photo-description">{description}</p>}
     </header>
 
     <div class="photo-content">
